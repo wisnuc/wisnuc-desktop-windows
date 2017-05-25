@@ -3,7 +3,7 @@ copyright: wisnuc
 productName: fruitmix-desktop
 
 asar: false
-compression: store
+compression: normal
 
 directories:
   buildResources: /
