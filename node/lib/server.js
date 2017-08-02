@@ -259,11 +259,13 @@ export const uploadFileWithStream = (driveUUID, dirUUID, name, part, readStream,
     if (error) {
       console.log('error', error)
     } else {
-      console.log(`uploadFile part from ${part.start} to ${part.end} success`)
+      // console.log(`uploadFile part from ${part.start} to ${part.end} success`)
       if (callback) callback()
     }
   })
 }
+
+export const uploadFileWithStreamAsync = Promise.promisify(uploadFileWithStream)
 
 /**
 createFold
@@ -289,9 +291,11 @@ export const createFold = (driveUUID, dirUUID, dirname, callback) => {
     headers: { Authorization }
   }
 
+  /*
   console.log(`>>>>>>>>>>>create Fold`)
   console.log(op)
   console.log('<<<<<<<<<<< start')
+  */
   request.post(op, (error) => {
     if (error) {
       console.log('error', error)
@@ -302,10 +306,43 @@ export const createFold = (driveUUID, dirUUID, dirname, callback) => {
           if (callback) callback(err)
           console.log('error', data)
         } else {
-          console.log(`create Fold ${dirname} success`)
+          // console.log(`create Fold ${dirname} success`)
           if (callback) callback(err, JSON.parse(data.body).entries)
+          return JSON.parse(data.body).entries
         }
       })
     }
   })
+}
+
+export const createFoldAsync = Promise.promisify(createFold)
+
+/**
+downloadFile
+
+@param {string} driveUUID
+@param {string} dirUUID
+@param {string} entryUUID
+@param {string} fileName
+@param {string} downloadPath
+@param {function} callback
+*/
+
+export const downloadFile = (driveUUID, dirUUID, entryUUID, fileName, downloadPath, callback) => {
+  initArgs()
+  const tmpPath = downloadPath || path.join(getTmpPath(), entryUUID)
+  const options = {
+    method: 'GET',
+    url: `${server}/drives/${driveUUID}/dirs/${dirUUID}/entries/${entryUUID}`,
+    headers: { Authorization },
+    qs: { name: fileName }
+  }
+
+  const stream = fs.createWriteStream(tmpPath)
+  stream.on('finish', () => {
+    // if (!downloadPath) // TODO rename
+    return callback(null, tmpPath)
+  })
+  const handle = request(options).on('error', err => callback(err))
+  handle.pipe(stream)
 }
