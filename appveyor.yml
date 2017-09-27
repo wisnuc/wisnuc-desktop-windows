@@ -1,8 +1,9 @@
 environment:
-  nodejs_version: "8"
+  nodejs_version: "6"
   skip_tags: false
 
 install:
+  - node -v
   - npm install
   - ./node_modules/.bin/webpack -p
   - npm run build
