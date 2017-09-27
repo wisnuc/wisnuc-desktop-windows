@@ -1,8 +1,9 @@
 environment:
-  nodejs_version: "6"
+  nodejs_version: "8"
   skip_tags: false
 
 install:
+  - ps: Install-Product node 8 x86
   - node -v
   - npm install
   - ./node_modules/.bin/webpack -p
