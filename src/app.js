@@ -17,7 +17,7 @@ localStorage.debug = '*component*'
 const lang = navigator.language
 i18n.configure({
   locales: ['en-US', 'zh-CN'],
-  directory: './locales',
+  directory: 'locales',
   defaultLocale: lang === 'zh-CN' ? 'zh-CN' : 'en-US'
 })
 
