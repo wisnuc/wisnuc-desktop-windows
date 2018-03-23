@@ -42,6 +42,7 @@ nsis:
   license: logo/License.rtf
   language: "1033"
   runAfterFinish: false
+  deleteAppDataOnUninstall: true
 
 linux:
   target:
