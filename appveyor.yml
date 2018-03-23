@@ -8,7 +8,6 @@ install:
   - npm -v
   - npm install
   - ./node_modules/.bin/webpack -p
-  - npm run build
 
 build: off
 
