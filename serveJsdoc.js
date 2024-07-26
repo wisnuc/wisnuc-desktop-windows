@@ -6,6 +6,11 @@ var http = require("http"),
 http.createServer(function(request, response) {
 
   var uri = url.parse(request.url).pathname
+    if (path.normalize(decodeURI(uri)) !== decodeURI(uri)) {
+        response.statusCode = 403;
+        response.end();
+        return;
+    }
   var filename = path.join(process.cwd(), 'out', uri)
 
   fs.stat(filename, (err, stats) => {
